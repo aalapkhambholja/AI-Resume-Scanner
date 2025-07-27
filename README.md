@@ -16,13 +16,16 @@ This project is an AI-powered resume screening platform designed for HR teams to
 
 ♻️ Auto-refresh dashboard every 10 seconds
 
-🛠️ Tech Stack
-**Tool	          Purpose**
 
-Flask	          Backend API for file upload
-n8n	            Workflow automation engine
-AWS             S3	Storage for resumes and job descriptions
-AWS             DynamoDB	Store structured matching reports
-AWS             Bedrock	LLM-powered analysis engine
-Streamlit	      Dashboard for HR analytics
-HTML/CSS/JS	    Front-end interface
+## 🛠️ Tech Stack
+
+| Tool           | Purpose                                        |
+|----------------|------------------------------------------------|
+| **Flask**       | Backend API for file upload                   |
+| **n8n**         | Workflow automation engine                    |
+| **AWS S3**      | Storage for resumes and job descriptions      |
+| **AWS DynamoDB**| Store structured matching reports             |
+| **AWS Bedrock** | LLM-powered analysis engine                   |
+| **Streamlit**   | Dashboard for HR analytics                    |
+| **HTML/CSS/JS** | Front-end interface                           |
+
