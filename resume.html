@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Scanner Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ae81df, #7199de);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 450px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-upload {
+      display: inline-block;
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #2575fc;
+      color: white;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .custom-file-upload:hover {
+      background-color: #1a5fd4;
+    }
+
+    .file-name {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background-color: #6a11cb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5013aa;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 15px;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>IT-Expert AI Resume Scanner</h2>
+
+  <label for="resume">Upload Resume:</label>
+  <label class="custom-file-upload">
+    <input type="file" id="resume" accept=".pdf,.doc,.docx" onchange="updateFileName('resume')" />
+    Choose Resume
+  </label>
+  <div class="file-name" id="resume-name">No file selected</div>
+
+  <label for="jd">Upload Job Description:</label>
+  <label class="custom-file-upload">
+    <input type="file" id="jd" accept=".pdf,.doc,.docx,.txt" onchange="updateFileName('jd')" />
+    Choose Job Description
+  </label>
+  <div class="file-name" id="jd-name">No file selected</div>
+
+  <button onclick="submitFiles()">Submit for Analysis</button>
+  <div class="message" id="msg"></div>
+</div>
+
+<script>
+  function updateFileName(type) {
+    const fileInput = document.getElementById(type);
+    const fileNameDiv = document.getElementById(`${type}-name`);
+    if (fileInput.files.length > 0) {
+      fileNameDiv.textContent = fileInput.files[0].name;
+    } else {
+      fileNameDiv.textContent = "No file selected";
+    }
+  }
+
+  async function submitFiles() {
+    const resumeFile = document.getElementById('resume').files[0];
+    const jdFile = document.getElementById('jd').files[0];
+    const msg = document.getElementById('msg');
+
+    if (!resumeFile || !jdFile) {
+      msg.textContent = "⚠️ Please upload both Resume and Job Description.";
+      msg.style.color = "red";
+      return;
+    }
+
+    msg.textContent = "⏳ Uploading files...";
+    msg.style.color = "black";
+
+    const formData = new FormData();
+    formData.append('resume', resumeFile);
+    formData.append('jd', jdFile);
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        msg.style.color = 'green';
+        msg.textContent = "✅ Files uploaded successfully.";
+      } else {
+        msg.style.color = 'red';
+        msg.textContent = `❌ Upload failed: ${data.error}`;
+      }
+    } catch (err) {
+      msg.style.color = 'red';
+      msg.textContent = `❌ Upload error: ${err.message}`;
+    }
+  }
+</script>
+
+</body>
+</html>
